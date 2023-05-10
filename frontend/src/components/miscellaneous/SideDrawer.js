@@ -12,6 +12,8 @@ import {
 } from "@chakra-ui/menu";
 import { Avatar } from "@chakra-ui/avatar";
 import { ChatState } from "../../Context/ChatProvider";
+import ProfileModel from "./ProfileModel";
+import { useHistory } from "react-router-dom/";
 
 const SideDrawer = () => {
   const [search, setSearch] = useState("");
@@ -20,7 +22,12 @@ const SideDrawer = () => {
   const [loadingChat, setLoadingChat] = useState(false);
 
   const { user } = ChatState();
+  const history = useHistory();
 
+  const logoutHandler = () => {
+    localStorage.removeItem("userInfo");
+    history.push("/");
+  };
   return (
     <>
       <Box
@@ -58,9 +65,19 @@ const SideDrawer = () => {
             />
           </MenuButton>
           <MenuList>
-            <MenuItem>My Profile</MenuItem>
+            <ProfileModel user={user}>
+              <MenuItem
+                fontWeight='bold'
+                color='black'
+                _hover={{ background: "#4A5568" }}
+              >
+                My Profile
+              </MenuItem>
+            </ProfileModel>
             <MenuDivider />
-            <MenuItem>Logout</MenuItem>
+            <MenuItem fontWeight='bold' color='black' onClick={logoutHandler}>
+              Logout
+            </MenuItem>
           </MenuList>
         </Menu>
       </Box>
