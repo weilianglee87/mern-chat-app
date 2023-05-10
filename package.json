@@ -22,6 +22,7 @@
     "express": "^4.17.1",
     "express-async-handler": "^1.2.0",
     "jsonwebtoken": "^9.0.0",
+    "mongodb": "^5.4.0",
     "mongoose": "^7.1.0",
     "nodemon": "^2.0.7"
   }
