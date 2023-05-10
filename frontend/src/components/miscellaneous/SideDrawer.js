@@ -10,12 +10,16 @@ import {
   MenuItem,
   MenuDivider,
 } from "@chakra-ui/menu";
+import { Avatar } from "@chakra-ui/avatar";
+import { ChatState } from "../../Context/ChatProvider";
 
 const SideDrawer = () => {
   const [search, setSearch] = useState("");
   const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loadingChat, setLoadingChat] = useState(false);
+
+  const { user } = ChatState();
 
   return (
     <>
@@ -43,6 +47,21 @@ const SideDrawer = () => {
             <BellIcon fontSize='2xl' m={1} />
           </MenuButton>
           {/* <MenuList></MenuList> */}
+        </Menu>
+        <Menu>
+          <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+            <Avatar
+              size='sm'
+              cursor='pointer'
+              name={user.name}
+              src={user.pic}
+            />
+          </MenuButton>
+          <MenuList>
+            <MenuItem>My Profile</MenuItem>
+            <MenuDivider />
+            <MenuItem>Logout</MenuItem>
+          </MenuList>
         </Menu>
       </Box>
     </>
