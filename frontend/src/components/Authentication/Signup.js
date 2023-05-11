@@ -8,60 +8,16 @@ import axios from "axios";
 import { useHistory } from "react-router-dom";
 
 const Signup = () => {
-  const [show, setShow] = useState();
+  const [show, setShow] = useState(false);
   const [name, setName] = useState();
   const [email, setEmail] = useState();
-  const [confirmpassword, setConfirmPassword] = useState();
+  const [confirmpassword, setConfirmPassword] = useState("");
   const [password, setPassword] = useState();
   const [pic, setPic] = useState();
   const [picloading, setPicLoading] = useState(false);
   const toast = useToast();
   const history = useHistory();
-
   const handleCLick = () => setShow(!show);
-
-  const postDetails = (pics) => {
-    setPicLoading(true);
-    if (pics === undefined) {
-      toast({
-        title: "Please select an Image",
-        status: "warning",
-        duration: 5000,
-        isClosable: true,
-        position: "bottom",
-      });
-      return;
-    }
-    console.log(pics);
-    if (pics.type === "image/jpeg" || pics.type === "image/png") {
-      const data = new FormData();
-      data.append("file", pics);
-      data.append("upload_preset", "mern-chat");
-      data.append("cloud_name", "weilianglee");
-      fetch("https://api.cloudinary.com/v1_1/weilianglee/image/upload", {
-        method: "post",
-        body: data,
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          setPic(data.url.toString());
-          setPicLoading(false);
-        })
-        .catch((e) => {
-          setPicLoading(false);
-        });
-    } else {
-      toast({
-        title: "Please Select Image",
-        status: "warning",
-        duration: 5000,
-        isClosable: true,
-        position: "bottom",
-      });
-      setPicLoading(false);
-      return;
-    }
-  };
 
   const submmitHandler = async () => {
     setPicLoading(true);
@@ -118,6 +74,49 @@ const Signup = () => {
         position: "bottom",
       });
       setPicLoading(false);
+    }
+  };
+
+  const postDetails = (pics) => {
+    setPicLoading(true);
+    if (pics === undefined) {
+      toast({
+        title: "Please select an Image",
+        status: "warning",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+      return;
+    }
+    console.log(pics);
+    if (pics.type === "image/jpeg" || pics.type === "image/png") {
+      const data = new FormData();
+      data.append("file", pics);
+      data.append("upload_preset", "mern-chat");
+      data.append("cloud_name", "weilianglee");
+      fetch("https://api.cloudinary.com/v1_1/weilianglee/image/upload", {
+        method: "post",
+        body: data,
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          setPic(data.url.toString());
+          setPicLoading(false);
+        })
+        .catch((e) => {
+          setPicLoading(false);
+        });
+    } else {
+      toast({
+        title: "Please Select Image",
+        status: "warning",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+      setPicLoading(false);
+      return;
     }
   };
 
