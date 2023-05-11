@@ -10,7 +10,15 @@ import { getSender } from "../config/ChatLogics";
 import GroupChatmodel from "./miscellaneous/GroupChatmodel";
 
 const MyChats = ({ fetchAgain }) => {
-  const { selectedChat, setSelectedChat, user, chats, setChats } = ChatState();
+  const {
+    selectedChat,
+    setSelectedChat,
+    user,
+    chats,
+    setChats,
+    notifications,
+    setNotifications,
+  } = ChatState();
   const [loggedUser, setLoggedUser] = useState();
 
   const toast = useToast();
@@ -88,9 +96,21 @@ const MyChats = ({ fetchAgain }) => {
           <Stack overflowY='scroll'>
             {chats.map((chat) => (
               <Box
-                onClick={() => setSelectedChat(chat)}
+                onClick={() => {
+                  setSelectedChat(chat);
+                  setNotifications(
+                    notifications.filter((n) => n.chat._id !== chat._id)
+                  );
+                }}
                 cursor='pointer'
-                bg={selectedChat === chat ? "#38B2AC" : "#E8E8E8"}
+                bg={
+                  selectedChat === chat ||
+                  (chat.isGroupChat && selectedChat === chat)
+                    ? "#38B2AC" // Use teal for selected chats or group chats
+                    : chat.isGroupChat
+                    ? "#C4C4C4" // Use a darker shade of gray for group chats
+                    : "#E8E8E8" // Use a lighter shade of gray for one-to-one chats
+                }
                 color={selectedChat === chat ? "white" : "black"}
                 px={3}
                 py={2}
@@ -102,8 +122,14 @@ const MyChats = ({ fetchAgain }) => {
                     ? getSender(loggedUser, chat.users)
                     : chat.chatName}
                 </Text>
-
-                <Text fontSize='xs'></Text>
+                {chat.latestMessage && (
+                  <Text fontSize='xs'>
+                    <b>{chat.latestMessage.sender.name} : </b>
+                    {chat.latestMessage.content.length > 50
+                      ? chat.latestMessage.content.substring(0, 51) + "..."
+                      : chat.latestMessage.content}
+                  </Text>
+                )}
               </Box>
             ))}
           </Stack>

@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/layout";
 import { ChatState } from "../Context/ChatProvider";
-import SideDrawer from "./../components/miscellaneous/SideDrawer";
+import SideDrawer from "../components/miscellaneous/SideDrawer";
 import MyChats from "./../components/MyChats";
 import ChatBox from "./../components/ChatBox";
 import { useState } from "react";
@@ -8,9 +8,10 @@ import { useState } from "react";
 const ChatPage = () => {
   const { user } = ChatState();
   const [fetchAgain, setFetchAgain] = useState(false);
+  console.log(user);
 
   return (
-    <div style={{ width: "100%" }}>
+    <Box style={{ width: "100%" }}>
       {user && <SideDrawer />}
       <Box
         display='flex'
@@ -24,7 +25,8 @@ const ChatPage = () => {
           <ChatBox fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} />
         )}
       </Box>
-    </div>
+    </Box>
   );
 };
+
 export default ChatPage;

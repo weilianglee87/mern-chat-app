@@ -16,6 +16,7 @@ import { useEffect } from "react";
 
 function Homepage() {
   const history = useHistory();
+
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("userInfo"));
 
@@ -24,6 +25,7 @@ function Homepage() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [history]);
+
   return (
     <Container maxW='xl' centerContent>
       <Box
