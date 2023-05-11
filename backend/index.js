@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 const path = require("path");
 const connectDB = require("./config/db");
 const userRoutes = require("./routes/userRoutes");
@@ -14,6 +15,12 @@ connectDB();
 const app = express();
 
 app.use(express.json());
+app.use(
+  cors({
+    credentials: true,
+    origin: "http://localhost:3000",
+  })
+);
 
 app.get("/", (req, res) => {
   res.send("API is running");
