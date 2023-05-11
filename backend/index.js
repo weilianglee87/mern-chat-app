@@ -13,23 +13,8 @@ require("dotenv").config({
 connectDB();
 
 const app = express();
+app.use(cors());
 app.use(express.json());
-
-const whitelist = [
-  "http://localhost:3000",
-  "https://mernchatproject4-backend.vercel.app/",
-];
-const corsOptions = {
-  origin: (origin, callback) => {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-};
-
-app.use(cors(corsOptions));
 
 app.get("/", (req, res) => {
   res.send("API is running");
