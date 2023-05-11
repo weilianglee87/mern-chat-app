@@ -9,12 +9,11 @@ import { useHistory } from "react-router-dom";
 
 const Login = () => {
   const [show, setShow] = useState(false);
+  const handleClick = () => setShow(!show);
+  const toast = useToast();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const toast = useToast();
-
-  const handleClick = () => setShow(!show);
 
   const history = useHistory();
 
@@ -72,7 +71,7 @@ const Login = () => {
 
   return (
     <VStack spacing='10px'>
-      <FormControl id='loginemail' isRequired>
+      <FormControl id='email' isRequired>
         <FormLabel>Email Address</FormLabel>
         <Input
           value={email}
@@ -81,7 +80,7 @@ const Login = () => {
           onChange={(e) => setEmail(e.target.value)}
         />
       </FormControl>
-      <FormControl id='loginpassword' isRequired>
+      <FormControl id='password' isRequired>
         <FormLabel>Password</FormLabel>
         <InputGroup size='md'>
           <Input
