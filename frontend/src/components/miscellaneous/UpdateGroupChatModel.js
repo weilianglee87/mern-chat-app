@@ -13,10 +13,13 @@ import {
   Box,
   FormControl,
   Input,
+  Spinner,
 } from "@chakra-ui/react";
 import { ViewIcon } from "@chakra-ui/icons";
 import { ChatState } from "../../Context/ChatProvider";
 import UserBadgeItem from "../UserAvatar/UserBadgeItem";
+import axios from "axios";
+import UserListItem from "../UserAvatar/UserListItem";
 
 const UpdateGroupChatModel = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -29,11 +32,87 @@ const UpdateGroupChatModel = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
 
   const { selectedChat, setSelectedChat, user } = ChatState();
 
+  const handleaddUser = () => {};
+
   const handleRemove = () => {};
 
-  const handleRename = () => {};
+  const handleRename = async () => {
+    if (!groupChatName) return;
 
-  const handleSearch = () => {};
+    // Check if the user is the admin of the group
+    if (selectedChat.groupAdmin._id !== user._id) {
+      toast({
+        title: "Only the admin can rename the group",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+      return;
+    }
+    try {
+      setRenameLoading(true);
+      const config = {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      };
+      const { data } = await axios.put(
+        `/api/chat/rename`,
+        {
+          chatId: selectedChat._id,
+          chatName: groupChatName,
+        },
+        config
+      );
+
+      console.log(data._id);
+      // setSelectedChat("");
+      setSelectedChat(data);
+      setFetchAgain(!fetchAgain);
+      setRenameLoading(false);
+    } catch (error) {
+      toast({
+        title: "Error Occured!",
+        description: error.response.data.message,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+      setRenameLoading(false);
+    }
+    setGroupChatName("");
+  };
+
+  const handleSearch = async (query) => {
+    setSearch(query);
+    if (!query) {
+      return;
+    }
+    try {
+      setLoading(true);
+      const config = {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      };
+
+      const { data } = await axios.get(`/api/user?search=${search}`, config);
+      console.log(data);
+      setLoading(false);
+      setSearchResult(data);
+    } catch (e) {
+      toast({
+        title: "Error Occured",
+        description: "Failed to Load the Search Results",
+        status: "error",
+        duration: 5000,
+        isCloseable: true,
+        position: "bottom-left",
+      });
+    }
+  };
 
   return (
     <>
@@ -87,9 +166,26 @@ const UpdateGroupChatModel = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
                 onChange={(e) => handleSearch(e.target.value)}
               />
             </FormControl>
+            {loading ? (
+              <Spinner size='lg' />
+            ) : (
+              searchResult?.map((user) => (
+                <UserListItem
+                  key={user._id}
+                  user={user}
+                  handleFunction={() => handleaddUser(user)}
+                />
+              ))
+            )}
           </ModalBody>
           <ModalFooter>
-            <Button>Leave Group</Button>
+            <Button
+              color='white'
+              backgroundColor='red'
+              onClick={() => handleRemove(user)}
+            >
+              Leave Group
+            </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
