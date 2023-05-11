@@ -13,12 +13,22 @@ require("dotenv").config({
 connectDB();
 
 const app = express();
-app.use(
-  cors({
-    origin: "https://mernchatproject4.vercel.app",
-    credentials: true,
-  })
-);
+
+const corsOptions = {
+  origin: "https://mernchatproject4.vercel.app",
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
+app.use(function (req, res, next) {
+  res.header(
+    "Access-Control-Allow-Origin",
+    "https://mernchatproject4.vercel.app"
+  );
+  res.header("Access-Control-Allow-Credentials", true);
+  next();
+});
+
 app.use(express.json());
 
 app.get("/", (req, res) => {
