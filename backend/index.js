@@ -14,20 +14,22 @@ connectDB();
 
 const app = express();
 
-const corsOptions = {
-  origin: "https://mernchatproject4.vercel.app",
-  credentials: true,
-};
+app.use(
+  cors({
+    origin: process.env.URL,
+    credentials: true,
+  })
+);
 
-app.use(cors(corsOptions));
-app.use(function (req, res, next) {
-  res.header(
-    "Access-Control-Allow-Origin",
-    "https://mernchatproject4.vercel.app"
-  );
-  res.header("Access-Control-Allow-Credentials", true);
-  next();
-});
+// app.use(cors(corsOptions));
+// app.use(function (req, res, next) {
+//   res.header(
+//     "Access-Control-Allow-Origin",
+//     "https://mernchatproject4.vercel.app"
+//   );
+//   res.header("Access-Control-Allow-Credentials", true);
+//   next();
+// });
 
 app.use(express.json());
 
@@ -55,6 +57,7 @@ const io = require("socket.io")(server, {
   pingTimeout: 60000,
   cors: {
     origin: process.env.URL,
+    credentials: true,
   },
 });
 
