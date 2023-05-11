@@ -15,7 +15,7 @@ connectDB();
 const app = express();
 
 const corsOptions = {
-  origin: process.env.URL,
+  origin: "https://mernchatproject4.vercel.app",
   credentials: true,
 };
 
