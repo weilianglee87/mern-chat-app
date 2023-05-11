@@ -1,15 +1,3 @@
-import React, { useState } from "react";
-import { Box, Text } from "@chakra-ui/layout";
-import { Tooltip } from "@chakra-ui/tooltip";
-import { Button } from "@chakra-ui/button";
-import { BellIcon, ChevronDownIcon } from "@chakra-ui/icons";
-import {
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  MenuDivider,
-} from "@chakra-ui/menu";
 import {
   Drawer,
   DrawerOverlay,
@@ -17,20 +5,32 @@ import {
   DrawerHeader,
   DrawerBody,
 } from "@chakra-ui/modal";
+import {
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuDivider,
+} from "@chakra-ui/menu";
+import { Tooltip } from "@chakra-ui/tooltip";
+import { BellIcon, ChevronDownIcon } from "@chakra-ui/icons";
+import { Box, Text } from "@chakra-ui/layout";
+import { Button } from "@chakra-ui/button";
 import { Avatar } from "@chakra-ui/avatar";
 import { ChatState } from "../../Context/ChatProvider";
-import ProfileModel from "./ProfileModel";
 import { useHistory } from "react-router-dom/";
+import { Input } from "@chakra-ui/input";
 import { useDisclosure } from "@chakra-ui/react";
-import ChatLoading from "../Chatloading";
-import axios from "axios";
-import UserListItem from "../UserAvatar/UserListItem";
 import { useToast } from "@chakra-ui/toast";
 import { Spinner } from "@chakra-ui/spinner";
-import { Input } from "@chakra-ui/input";
+import ProfileModel from "./ProfileModel";
+import ChatLoading from "../Chatloading";
+import UserListItem from "../UserAvatar/UserListItem";
+import React, { useState } from "react";
+import axios from "axios";
 import { getSender } from "../../config/ChatLogics";
-import NotificationBadge from "react-notification-badge";
 import { Effect } from "react-notification-badge";
+import NotificationBadge from "react-notification-badge";
 
 const SideDrawer = () => {
   const [search, setSearch] = useState("");
@@ -55,6 +55,43 @@ const SideDrawer = () => {
   };
 
   const toast = useToast();
+
+  const handleSearch = async () => {
+    if (!search) {
+      toast({
+        title: "Please Enter Something in search",
+        status: "warning",
+        duration: 5000,
+        isClosable: true,
+        position: "top-left",
+      });
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      };
+
+      const { data } = await axios.get(`/api/user?search=${search}`, config);
+
+      setLoading(false);
+      setSearchResult(data);
+    } catch (e) {
+      toast({
+        title: "Error Occured",
+        description: "Failed to Load the Search Results",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom-left",
+      });
+    }
+  };
 
   const accessChat = async (userId) => {
     try {
@@ -87,8 +124,6 @@ const SideDrawer = () => {
     }
   };
 
-  const handleSearch = () => {};
-
   return (
     <>
       <Box
@@ -110,62 +145,65 @@ const SideDrawer = () => {
         <Text fontSize='2xl' fontFamily='Work sans'>
           Mern Chat
         </Text>
-        <Menu>
-          <MenuButton p={1}>
-            <NotificationBadge
-              count={notifications.length}
-              effect={Effect.SCALE}
-            />
-            <BellIcon fontSize='2xl' m={1} />
-          </MenuButton>
-          <MenuList pl={2}>
-            {!notifications.length && "No New Messages"}
-            {notifications.map((notification) => (
-              <MenuItem
-                key={notification._id}
-                onClick={() => {
-                  setSelectedChat(notification.chat);
-                  setNotifications(
-                    notifications.filter((n) => n !== notification)
-                  );
-                }}
-              >
-                {notification.chat.isGroupChat
-                  ? `New Message in ${notification.chat.chatName}`
-                  : `New Message from ${getSender(
-                      user,
-                      notification.chat.users
-                    )}`}
+        <div>
+          <Menu>
+            <MenuButton p={1}>
+              <NotificationBadge
+                count={notifications.length}
+                effect={Effect.SCALE}
+              />
+              <BellIcon fontSize='2xl' m={1} />
+            </MenuButton>
+            <MenuList pl={2}>
+              {!notifications.length && "No New Messages"}
+              {notifications.map((notification) => (
+                <MenuItem
+                  key={notification._id}
+                  onClick={() => {
+                    setSelectedChat(notification.chat);
+                    setNotifications(
+                      notifications.filter((n) => n !== notification)
+                    );
+                  }}
+                >
+                  {notification.chat.isGroupChat
+                    ? `New Message in ${notification.chat.chatName}`
+                    : `New Message from ${getSender(
+                        user,
+                        notification.chat.users
+                      )}`}
+                </MenuItem>
+              ))}
+            </MenuList>
+          </Menu>
+          <Menu>
+            <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+              <Avatar
+                size='sm'
+                cursor='pointer'
+                name={user.name}
+                src={user.pic}
+              />
+            </MenuButton>
+            <MenuList>
+              <ProfileModel user={user}>
+                <MenuItem
+                  fontWeight='bold'
+                  color='black'
+                  _hover={{ background: "#4A5568" }}
+                >
+                  My Profile
+                </MenuItem>{" "}
+              </ProfileModel>
+              <MenuDivider />
+              <MenuItem fontWeight='bold' color='black' onClick={logoutHandler}>
+                Logout
               </MenuItem>
-            ))}
-          </MenuList>
-        </Menu>
-        <Menu>
-          <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-            <Avatar
-              size='sm'
-              cursor='pointer'
-              name={user.name}
-              src={user.pic}
-            />
-          </MenuButton>
-          <MenuList>
-            <ProfileModel user={user}>
-              <MenuItem
-                fontWeight='bold'
-                color='black'
-                _hover={{ background: "#4A5568" }}
-              >
-                My Profile
-              </MenuItem>
-            </ProfileModel>
-            <MenuDivider />
-            <MenuItem fontWeight='bold' color='black' onClick={logoutHandler}>
-              Logout
-            </MenuItem>
-          </MenuList>
-        </Menu>
+            </MenuList>
+          </Menu>
+        </div>
       </Box>
+
       <Drawer
         placement='left'
         onClose={() => {
