@@ -28,20 +28,29 @@ const ScrollableChat = ({ messages }) => {
                 />
               </Tooltip>
             )}
-            <span
-              style={{
-                backgroundColor: `${
-                  m.sender._id === user._id ? "#BEE3F8" : "#B9F5D0"
-                }`,
-                borderRadius: "20px",
-                padding: "5px 15px",
-                maxWidth: "75%",
-                marginLeft: isSameSenderMargin(messages, m, i, user._id),
-                marginTop: isSameUser(messages, m, i, user._id) ? 3 : 10,
-              }}
+            <Tooltip
+              label={new Date(m.createdAt).toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
+              placement='bottom'
+              hasArrow
             >
-              {m.content}
-            </span>
+              <span
+                style={{
+                  backgroundColor: `${
+                    m.sender._id === user._id ? "#BEE3F8" : "#B9F5D0"
+                  }`,
+                  borderRadius: "20px",
+                  padding: "5px 15px",
+                  maxWidth: "75%",
+                  marginLeft: isSameSenderMargin(messages, m, i, user._id),
+                  marginTop: isSameUser(messages, m, i, user._id) ? 3 : 10,
+                }}
+              >
+                {m.content}
+              </span>
+            </Tooltip>
           </div>
         ))}
     </ScrollableFeed>
