@@ -7,7 +7,7 @@ const messageRoutes = require("./routes/messageRoutes");
 const { notFound, errorHandler } = require("./middlewares/errorMiddleware");
 
 require("dotenv").config({
-  path: path.join(__dirname, "..", ".env"),
+  path: path.resolve(__dirname, "./.env"),
 });
 connectDB();
 
