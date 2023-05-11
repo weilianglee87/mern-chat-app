@@ -161,9 +161,9 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   useEffect(() => {
     socket = io("https://mernchatproject4-backend.vercel.app/", {
       withCredentials: true,
-      extraHeaders: {
-        "my-custom-header": "abcd",
-      },
+      methods: ["GET", "POST"],
+      allowedHeaders: ["my-custom-header"],
+      credentials: true,
     });
     socket.emit("setup", user);
     socket.on("connected", () => setSocketConnected(true));
