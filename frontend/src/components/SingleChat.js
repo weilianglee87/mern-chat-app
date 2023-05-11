@@ -21,7 +21,6 @@ import { io } from "socket.io-client";
 import Lottie from "react-lottie";
 import animationData from "../animations/typing.json";
 
-axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
 const ENDPOINT = process.env.REACT_APP_BASE_URL;
 let socket, selectedChatCompare;
 
