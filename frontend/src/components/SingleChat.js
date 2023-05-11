@@ -3,6 +3,9 @@ import { ChatState } from "../Context/ChatProvider";
 import { Box, Text } from "@chakra-ui/layout";
 import { IconButton } from "@chakra-ui/button";
 import { ArrowBackIcon } from "@chakra-ui/icons";
+import { getSender, getSenderFull } from "../config/ChatLogics";
+import ProfileModel from "./miscellaneous/ProfileModel";
+import UpdateGroupChatModel from "./miscellaneous/UpdateGroupChatModel";
 
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const { user, selectedChat, setSelectedChat } = ChatState();
@@ -26,17 +29,33 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
               onClick={() => setSelectedChat("")}
             />
             {!selectedChat.isGroupChat ? (
-              <></>
+              <>
+                {getSender(user, selectedChat.users)}
+                <ProfileModel user={getSenderFull(user, selectedChat.users)} />
+              </>
             ) : (
               <>
                 {selectedChat.chatName.toUpperCase()}
-                {/* <UpdateGroupChatModel
+                <UpdateGroupChatModel
                   fetchAgain={fetchAgain}
                   setFetchAgain={setFetchAgain}
-                /> */}
+                />
               </>
             )}
           </Text>
+          <Box
+            display='flex'
+            flexDir='column'
+            justifyContent='flex-end'
+            p={3}
+            bg='#E8E8E8'
+            w='100%'
+            h='100%'
+            borderRadius='lg'
+            overflowY='hidden'
+          >
+            {/* Message Here */}
+          </Box>
         </>
       ) : (
         <Box
