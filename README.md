@@ -1,30 +1,70 @@
-MERN Chat App
-A real-time chat application made with React, Node.js, Express.js, MongoDB, and Socket.IO.
+# MERN Chat Application
 
-Description
-This is a real-time chat application that allows users to chat with each other in real-time, create groups, and have one-on-one conversations. The application is built using React, Node.js, Express.js, MongoDB, and Socket.IO. Users can log in to the application, search for other users, create groups, add or remove participants, and have real-time conversations.
+A simple realtime chat application made using React JS, a JavaScript library for building user interfaces by Facebook, Node JS, Express JS, Socket.io, and MongoDB.
 
-Features
-In addition to the original features of the MERN chat app, the following features have been added:
+This application uses React JS to create a component-oriented user interface. All components are written in JSX and ES6 style and are combined to get a single build for production purposes using Webpack 5.
 
-Close/Leave Group: Users can now close or leave a group conversation. The close group feature allows the user who created the group to delete the entire conversation and remove all participants. The leave group feature allows a participant to leave the group conversation but keeps the conversation intact for the remaining participants.
+ES6 module creation along with import/export is used. Babel is used to transpile all JSX code to vanilla JavaScript code. To install all the dependencies npm is used.
 
-Message Timestamp: Users can now hover over messages in a conversation to see the timestamp when the message was sent.
+Back end is implemented using Node JS, Express JS and MongoDB. Atlas, the Cloud version of MongoDB, is used. Real-time communication is done using Socket.io.
 
-Usage
+This is a responsive web application for viewing in both mobile and desktop.
+
+## Features
+
+- Latest features of JavaScript i.e. ES6, ES7, ES8 is used
+- React JS Hooks are used with Functional components
+- ES8 async/await is used
+- All user details, group chats, and conversations are stored in MongoDB Atlas
+- Login/Signup as well as Logout feature is added
+- Guest User Login added
+- Error will be shown if the credentials are not correct
+- Real-time communication & notification is supported using Socket.io
+- Realtime One on One chats and group chats
+- Functionality and features like Search for chats, create a group, add or remove participants.
+- typing... animation.
+- Online / Offline status are shown.
+- Read / Unread status of conversation is supported
+- All the conversation are stored in the database i.e. persistent
+- Group Admin can be distinguished with a different color
+- Close/Leave Group feature added
+- Hover over chats to see the time the message created at.
+
+## Tech Stack
+
+MongoDB, Express, React, Node, Socket.IO, Chakra-UI
+
+## Hosted/Deployed
+
+https://mern-chat-app-p4.herokuapp.com/
+
+## Usage
+
+Test users:
+
+| Email             | Password |
+| ----------------- | -------- |
+| guest@example.com | 123456   |
+
 Clone the repository:
 
-bash
-Copy code
-git clone https://github.com/your-username/mern-chat-app.git
-Install dependencies:
+git clone https://github.com/weilianglee87/mern-chat-app.git
 
-Copy code
+## Env Variables:
+
+Create a .env file in the root and add the following
+
+NODE_ENV = production
+PORT = 5000
+MONGO_URI = <yourMongoDbUri>
+JWT_SECRET = <yourSecret>
+
+## Install Dependencies (frontend & backend):
+
 npm install
-Start the development server:
+cd frontend
+npm install
 
-arduino
-Copy code
-npm run dev
-Credits
-The original MERN chat app was created by [insert original author's name here]. The Close/Leave Group and Message Timestamp features were added by [insert your name here].
+Run:
+
+Run frontend (:3000) & backend (:5000)
