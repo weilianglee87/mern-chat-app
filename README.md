@@ -54,10 +54,10 @@ git clone https://github.com/weilianglee87/mern-chat-app.git
 
 Create a .env file in the root and add the following
 
-NODE_ENV = production
-PORT = 5000
-MONGO_URI = <yourMongoDbUri>
-JWT_SECRET = <yourSecret>
+- NODE_ENV = production
+- PORT = 5000
+- MONGO_URI = <yourMongoDbUri>
+- JWT_SECRET = <yourSecret>
 
 ## Install Dependencies (frontend & backend):
 
