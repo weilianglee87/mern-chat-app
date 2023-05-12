@@ -21,7 +21,7 @@ import { io } from "socket.io-client";
 import Lottie from "react-lottie";
 import animationData from "../animations/typing.json";
 
-const ENDPOINT = "https://mernchatproject4app.herokuapp.com/";
+const ENDPOINT = "https://mern-chat-app-p4.herokuapp.com/";
 let socket, selectedChatCompare;
 
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
