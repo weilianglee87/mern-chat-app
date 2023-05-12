@@ -59,12 +59,10 @@ const server = app.listen(
   console.log(`Server listening on port ${PORT}`)
 );
 
-const io = require("socket.io")(server, {
-  pingTimeout: 60000,
+const io = socketio(server, {
   cors: {
-    origin: "*",
+    origin: `https://mern-chat-app-p4.herokuapp.com/`,
     methods: ["GET", "POST"],
-    allowedHeaders: ["my-custom-header"],
     credentials: true,
   },
 });
