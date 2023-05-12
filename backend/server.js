@@ -12,11 +12,7 @@ connectDB();
 
 const app = express();
 
-app.use(
-  cors({
-    origin: "https://mern-chat-app-p4.herokuapp.com/",
-  })
-);
+app.use(cors());
 
 app.use(express.json());
 
